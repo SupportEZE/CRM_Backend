@@ -1,18 +1,38 @@
-name: Build and Deploy NestJS Backend
+name: Build, Scan, and Deploy
 
 on:
   workflow_dispatch:
     inputs:
-      client_name:
-        description: "Please Enter Backend folder name (Folder Name) To Deploy"
+      action_type:
+        description: "Enter 'scan' for code scan or 'deploy' for deployment"
         required: true
+      folder_name:
+        description: "Folder Name (Required for deploy)"
+        required: false
 
 jobs:
-  build-and-deploy:
+  conditional-job:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 🚫 Validate backend folder exists on server
+      - name: ⏳ Check Inputs
+        id: check
+        run: |
+          echo "Action Type: ${{ github.event.inputs.action_type }}"
+          
+          if [[ "${{ github.event.inputs.action_type }}" == "deploy" ]]; then
+            if [[ -z "${{ github.event.inputs.folder_name }}" ]]; then
+              echo "❌ folder_name is required for deployment."
+              exit 1
+            fi
+          fi
+          echo "✅ Input validation passed."
+
+  validate-client-folder:
+    needs: conditional-job
+    if: ${{ github.event.inputs.action_type == 'deploy' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚫 Validate client folder exists on server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 43.204.204.109
@@ -20,26 +40,37 @@ jobs:
           port: 22786
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            Backend_folder="${{ github.event.inputs.client_name }}"
-            if [ ! -d "/var/www/html/$Backend_folder" ]; then
-              echo "❌ ERROR: Backend Folder '/var/www/html/$Backend_folder' does not exist."
+            FOLDER_NAME="${{ github.event.inputs.folder_name }}"
+            if [ ! -d "/var/www/html/$FOLDER_NAME" ]; then
+              echo "❌ ERROR: Client folder '/var/www/html/$FOLDER_NAME' does not exist."
               exit 1
             else
-              echo "✅ Folder exists. Proceeding..."
+              echo "✅ BACKEND folder exists."
             fi
 
-      - name: 📥 Checkout code
+  scan-job:
+    needs: conditional-job
+    if: ${{ github.event.inputs.action_type == 'scan' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🧰 Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: 📦 Install dependencies (no lock file fallback)
-        run: npm install
-
-
+      - name: 🧹 Clean up macOS-only deps
+        run: |
+          jq 'del(.dependencies["@rollup/rollup-darwin-arm64"])' package.json > temp.json && mv temp.json package.json
+          sed -i '/"@rollup\/rollup-darwin-arm64"/,+5d' package-lock.json
+      - name: 📦 Install dependencies
+        run: |
+          npm ci --legacy-peer-deps
+          npm install sortablejs flatpickr apexcharts filepond luxon overlayscrollbars --save
+          npm install @types/sortablejs @types/flatpickr @types/luxon --save-dev || true
+          
       - name: 🔍 Run SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -48,7 +79,7 @@ jobs:
           unzip sonar-scanner.zip
           export PATH="$PWD/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
           sonar-scanner \
-            -Dsonar.projectKey=CRM-Backend \
+            -Dsonar.projectKey=CRM-Tailwind \
             -Dsonar.sources=src \
             -Dsonar.host.url=http://13.203.181.169:9000 \
             -Dsonar.login=$SONAR_TOKEN
@@ -80,31 +111,48 @@ jobs:
           attachments: bearer-report.sarif
           body: |
             Hello,
-            Please find the security and code quality reports attached.
 
-      - name: 🏗️ Build NestJS backend
-        run: npm run build
+            Code Quality and Security scan has been done. Please check the reports:
+            - Sonar: http://13.203.181.169:9000/dashboard?id=CRM-Tailwind
+            - Bearer: Attached.
 
-      - name: 📦 Zip build output
-        run: zip -r backend-build.zip dist .env package.json package-lock.json
+            Regards,
+            CI/CD Bot
 
-      - name: ☁️ Upload artifact to GitHub
+  deploy-job:
+    needs: validate-client-folder
+    if: ${{ github.event.inputs.action_type == 'deploy' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Install dependencies (no lock file fallback)
+        run: npm install
+
+      - name: 🛠️ Build Angular app
+        run: npm run build -- --output-path=preview
+
+      - name: 📦 Zip build
+        run: zip -r build.zip dist/
+
+      - name: ☁️ Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: backend-build
-          path: backend-build.zip
+          name: angular-build
+          path: build.zip
 
-      - name: 🚀 Copy build to server
+      - name: 📦 Copy to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: 43.204.204.109
           username: ec2-user
           port: 22786
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend-build.zip
+          source: build.zip
           target: /home/ec2-user/backend
 
-      - name: 🖥️ SSH into server and deploy
+      - name: 🚀 Deploy to server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 43.204.204.109
@@ -112,7 +160,20 @@ jobs:
           port: 22786
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            Backend_folder="${{ github.event.inputs.client_name }}"
+            FOLDER_NAME="${{ github.event.inputs.client_name }}"
+            TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+            BACKUP_DIR="/home/ec2-user/${FOLDER_NAME}/dist_backup_$TIMESTAMP"
+
+            echo "📁 Backing up existing deployment to $BACKUP_DIR ..."
+            if [ -d "/var/www/html/$FOLDER_NAME" ]; then
+              cp -r /var/www/html/$FOLDER_NAME "$BACKUP_DIR"
+              echo "✅ Backup complete."
+            else
+              echo "⚠️ Warning: No existing folder to backup."
+            fi
+
+            echo "📦 Unzipping new build and deploying..."
             cd /home/ec2-user/backend
-            unzip -o backend-build.zip -d /var/www/html/$Backend_folder
-            echo "✅ Backend deployed to /var/www/html/$Backend_folder"
+            unzip -o build.zip
+            cp -r dist/* /var/www/html/$FOLDER_NAME/dist
+            echo "🚀 Deployment complete."
