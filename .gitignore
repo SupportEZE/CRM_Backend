@@ -1,0 +1,22 @@
+# Ignore package-lock.json
+/package-lock.json
+
+# Ignore the dist directory (compiled output)
+dist/
+
+# Ignore node_modules (dependencies)
+node_modules/
+
+# Ignore .env (Subversion directory, usually used by IDEs)
+/.env
+/.env_local
+/.env_prod
+/.local-env
+
+# Ignore .public
+public/
+public/tmp/
+
+node_modules
+start-dev.sh
+build-dev.sh
