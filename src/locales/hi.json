@@ -1,0 +1,109 @@
+{
+  "SUCCESS": {
+    "CREATE": "डेटा सफलतापूर्वक सहेजा गया!",
+    "FETCH": "डेटा सफलतापूर्वक प्राप्त हुआ!",
+    "UPDATE": "डेटा सफलतापूर्वक अपडेट किया गया!",
+    "STATUS_UPDATE": "स्थिति सफलतापूर्वक अपडेट की गई!",
+    "DELETE": "डेटा सफलतापूर्वक हटाया गया!",
+    "FILE_DELETE": "फ़ाइल सफलतापूर्वक हटाई गई!",
+    "DETAIL": "विवरण सफलतापूर्वक प्राप्त हुआ",
+    "IMPORT": "डेटा सफलतापूर्वक इम्पोर्ट हुआ",
+    "LOG_SAVE": "लॉग सफलतापूर्वक सहेजा गया"
+  },
+  "ERROR": {
+    "BAD_REQ": "गलत अनुरोध",
+    "INVALID_DATE_RANGE": "तिथियां सही नहीं हैं",
+    "INTERNAL_SERVER_ERROR": "सर्वर त्रुटि"
+  },
+  "WARNING": {
+    "NOT_EXIST": "कोई डेटा नहीं मिला।",
+    "ALREADY_EXIST": "डेटा पहले से मौजूद है",
+    "ALREADY_STATUS_UPDATE": "स्थिति पहले ही अपडेट हो चुकी है",
+    "ALREADY_DELETE": "डेटा पहले ही हटा दिया गया है!",
+    "UPDATE_FAILED": "डेटा अपडेट विफल हुआ",
+    "EXIST": "डेटा पहले से मौजूद है",
+    "NO_DUPLICACY": "डुप्लिकेसी नहीं मिली",
+    "IMAGE_NOT_FOUND": "छवि नहीं मिली",
+    "INSERT_FAILED": "इन्सर्ट विफल हुआ",
+    "MOBILE": "मोबाइल",
+    "FILE_NOT_FOUND": "फ़ाइल नहीं मिली",
+    "DATA_NOT_FOUND": "डेटा नहीं मिला"
+  },
+  "CHAT": {
+    "FORBIDDEN": "अनुमति नहीं है",
+    "NO_RECIEVER": "प्राप्तकर्ता नहीं मिला",
+    "NO_ROOM": "रूम नहीं मिला"
+  },
+  "GIFT": {
+    "LIKE": "गिफ्ट को पसंद किया गया",
+    "UNLIKE": "गिफ्ट को हटाया गया"
+  },
+  "LEADERBOARD": {
+    "NO_CUSTOMER": "कोई ग्राहक नहीं मिला",
+    "NO_USER": "कोई उपयोगकर्ता नहीं मिला",
+    "NO_LEADERBOARD_DATA": "कोई लीडरबोर्ड डेटा नहीं है।"
+  },
+  "LEDGER": {
+    "INVALID_TRANSACTION_TYPE": "अमान्य लेनदेन प्रकार।",
+    "INVALID_CREATION_TYPE": "अमान्य निर्माण प्रकार।",
+    "INVALID_POINTS": "पॉइंट्स एक सकारात्मक संख्या होनी चाहिए।",
+    "INVALID_CUSTOMER": "ग्राहक बैलेंस नहीं मिला।",
+    "INSUFFICIENT_BALANCE": "डेबिट के लिए अपर्याप्त बैलेंस।",
+    "MISSING_FIELDS": "अनिवार्य फ़ील्ड्स (customer_name, login_type_id, customer_type_id, creation_type) गायब हैं"
+  },
+  "QR": {
+    "SUCCESS_SCAN": "QR कोड सफलतापूर्वक स्कैन किया गया।",
+    "CUSTOMER_NOT_ACTIVE": "आपकी प्रोफ़ाइल की पुष्टि हो रही है।",
+    "CUSTOMER_TYPE_NOT_DEFINED": "कृपया एडमिन से संपर्क करें।",
+    "SCAN_LIMIT_UNDEFINED": "स्कैन सीमा परिभाषित नहीं है।",
+    "LIMIT_REACHED": "स्कैन सीमा पूरी हो चुकी है।",
+    "NOT_FOUND": "अमान्य QR कोड।",
+    "ALREADY_SCANNED": "पहले ही स्कैन किया गया है।",
+    "POINT_CATEGORY_NOT_MAPPED": "पॉइंट कैटेगरी मैप नहीं है।",
+    "POINT_NOT_DEFINED": "पॉइंट्स निर्धारित नहीं हैं।",
+    "TYPE_MISMATCH": "QR कोड का प्रकार मेल नहीं खाता।",
+    "PRODUCT_NOT_EXIST": "मैप किया गया उत्पाद नहीं मिला",
+    "BOX_NOT_DEFINED": "उत्पाद पर बॉक्स आकार परिभाषित नहीं है।"
+  },
+  "REDEEM": {
+    "INSUFFICIENT_BALANCE": "रिडीम के लिए अपर्याप्त बैलेंस।",
+    "INVALID_PAYMENT_MODE": "भुगतान मोड अमान्य है।",
+    "KYC_NOT_VERIFIED": "KYC सत्यापित नहीं है।",
+    "INVALID_GIFT_TYPE": "अमान्य गिफ्ट प्रकार।",
+    "BANK_DETAILS_NOT_FOUND": "रिडीम के लिए अपने बैंक विवरण अपडेट करें।",
+    "UPI_DETAILS_NOT_FOUND": "रिडीम के लिए अपने UPI विवरण अपडेट करें।",
+    "NOT_FOUND": "अनुरोध नहीं मिला"
+  },
+  "SPIN": {
+    "NO_SPIN_AVAILABLE": "कोई स्पिन उपलब्ध नहीं है",
+    "POINT_MISSING": "पॉइंट्स निर्धारित नहीं हैं",
+    "NOT_ELIGIBLE": "स्पिन के लिए पात्र नहीं हैं"
+  },
+  "CUSTOMER": {
+    "NOT_EXIST": "ग्राहक मौजूद नहीं है",
+    "MOBILE": "मोबाइल",
+    "EMAIL": "ईमेल",
+    "UPI_ID": "UPI आईडी",
+    "ACCOUNT_NUMBER": "खाता संख्या",
+    "ACCOUNT_NUMBER_EXIST": "खाता संख्या पहले से मौजूद है!",
+    "IDENTIFIER_NOT_FOUND": "आईडेंटिफायर नहीं मिला, कृपया जांचें",
+    "CUSTOMER_CODE": "ग्राहक कोड",
+    "REFRRALCODE": "रेफरल कोड मौजूद नहीं है",
+    "ACCOUNT_NOT_MATCHED": "खाता संख्या और पुष्टि संख्या समान होनी चाहिए",
+    "DOC_NUMBER": "दस्तावेज़ संख्या",
+    "MOBILE_EXIST": "मोबाइल पहले से मौजूद है",
+    "PINCODE_EXIST": "पिनकोड पहले से मौजूद है",
+    "ACCOUNT_TYPE_NOT_FOUND": "खाता प्रकार नहीं मिला",
+    "DOC_NUMBER_EXIST": "दस्तावेज़ संख्या पहले से मौजूद है",
+    "NOT_APPROVED": "आपकी प्रोफ़ाइल की स्थिति 'स्वीकृत' होनी चाहिए!",
+    "KYC_ERROR": "जब तक आपका KYC स्वीकृत नहीं है, बैंक विवरण नहीं बदल सकते"
+  },
+  "CALL_REQUEST": {
+    "CREATE": "कॉल अनुरोध सफलतापूर्वक भेजा गया",
+    "EXIST": "कॉल अनुरोध पहले से मौजूद है"
+  },
+  "CSV": {
+    "ANALYZED": "CSV सफलतापूर्वक विश्लेषण किया गया",
+    "GENERATE": "CSV सफलतापूर्वक बनाया गया"
+  }
+}

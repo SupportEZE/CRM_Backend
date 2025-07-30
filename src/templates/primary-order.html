@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primary Order</title>
+  <style>
+    :root {
+      --primary-color: #2C3E50;
+      --accent-color: #3498DB;
+      --light-gray: #f4f6f9;
+      --border-color: #ddd;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background-color: #fff;
+      color: var(--primary-color);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .quotation-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    .company-info {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .info-block {
+      margin: 3px 0;
+    }
+
+    .customer-info {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: var(--light-gray);
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      font-size: 14px;
+    }
+
+    .customer-info .info-block {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      font-size: 14px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    }
+
+    thead {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      text-align: left;
+    }
+
+    td:last-child,
+    th:last-child,
+    td:nth-last-child(2),
+    th:nth-last-child(2) {
+      text-align: right;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #fafbfc;
+    }
+
+    tfoot td {
+      border: none;
+      padding: 8px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .totals-container {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .totals-table {
+      width: 350px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .totals-table td {
+      padding: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .totals-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .totals-table td:first-child {
+      text-align: left;
+    }
+
+    .totals-table td:last-child {
+      text-align: right;
+    }
+
+    footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="quotation-title">Order</div>
+    <div class="company-info">
+      <div class="info-block"><strong>{{ company_name }}</strong></div>
+      <div class="info-block">{{ company_address }}</div>
+      <div class="info-block">Email: {{ company_email }} | Phone: {{ company_phone }}</div>
+    </div>
+  </header>
+
+  <section class="customer-info">
+    <div class="info-block"><strong>To:</strong> {{ customer_name }}</div>
+    <div class="info-block">Company: {{ customer_name }}</div>
+    <div class="info-block">Email: {{ customer_email }}</div>
+    <div class="info-block">Date: {{ order_date }}</div>
+    <div class="info-block">Order No: {{ order_no }}</div>
+  </section>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Sr No</th>
+        <th>Product Name</th>
+        <th>Qty</th>
+        <th>Unit Price</th>
+        <th>Total</th>
+        <th>Discount %</th>
+        <th>GST %</th>
+        <th>Sub Total</th>
+        <th>Net Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each items}}
+      <tr>
+        <td>{{ indexPlusOne @index }}</td>
+        <td>{{ product_name }}</td>
+        <td>{{ quantity }}</td>
+        <td>{{ unit_price }}</td>
+        <td>{{ total_price }}</td>
+        <td>{{ discount_percent }}</td>
+        <td>{{ gst_percent }}</td>
+        <td>{{ sub_total }}</td>
+        <td>{{ net_amount }}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="totals-container">
+    <table class="totals-table">
+      <tr>
+        <td>Total Qty</td>
+        <td>{{ total_qty }}</td>
+      </tr>
+      <tr>
+        <td>Total Items</td>
+        <td>{{ total_item }}</td>
+      </tr>
+      <tr>
+        <td>Total Order Price</td>
+        <td>{{ total_amount }}</td>
+      </tr>
+      <tr>
+        <td>Total Discount</td>
+        <td>{{ total_discount_amount }}</td>
+      </tr>
+      <tr>
+        <td>Sub Total</td>
+        <td>{{ sub_total }}</td>
+      </tr>
+      <tr>
+        <td>Total Tax Amount</td>
+        <td>{{ total_gst_amount }}</td>
+      </tr>
+      <tr>
+        <td>Total Grand Amount</td>
+        <td>{{ grand_total }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <footer>
+    This quotation is valid until {{ validity_period }}. For questions, reach out to us at {{ company_email }}.
+  </footer>
+</body>
+
+</html>

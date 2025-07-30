@@ -1,0 +1,30 @@
+export interface CustomerStrategy {
+    create?(req: Request, params: any): Promise<any>;
+    update?(req: Request, params: any): Promise<any>;
+    detail?(req: Request, params: any): Promise<any>;
+    read?(req: Request, params: any): Promise<any>;
+    saveUserToCustomerMapping?(req: Request, params: any): Promise<any>;
+    assignCustomerMapping?(req: Request, params: any): Promise<any>;
+    saveContactPersonInfo?(req: Request, params: any): Promise<any>;
+    saveBankInfo?(req: Request, params: any): Promise<any>;
+    updateContactPersonInfo?(req: Request, params: any): Promise<any>;
+    saveMarka?(req: Request, params: any): Promise<any>;
+    updateMarka?(req: Request, params: any): Promise<any>;
+    saveOtherInfo?(req: Request, params: any): Promise<any>;
+    saveShippingAddress?(req: Request, params: any): Promise<any>;
+    updateShippingAddress?(req: Request, params: any): Promise<any>;
+    getShippingAddress?(req: Request, params: any): Promise<any>;
+    getCustomerAssigning?(req: Request, params: any): Promise<any>;
+    saveKycStatus?(req: Request, params: any): Promise<any>;
+    updateDocs?(req: Request, params: any): Promise<any>;
+    saveDocs?(params: any, req: Request): Promise<Request>;
+    updateCustomerStage?(req: Request, params: any): Promise<any>;
+    referralDetails?(req: Request, params: any): Promise<any>;
+    getKycStatus?(req: Request, params: any): Promise<any>;
+    identifier?(req: Request, params: any): Promise<any>;
+    saveShopGallery?(req: Request, params: any): Promise<any>;
+    saveShopGallery?(req: Request, params: any): Promise<any>;
+    getDocs?(req: Request, params: any): Promise<any>;
+    getBankDetail?(req: Request, params: any): Promise<any>;
+    deleteFile?(req: Request, params: any): Promise<any>;
+}

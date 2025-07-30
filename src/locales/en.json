@@ -1,0 +1,309 @@
+{
+    "SUCCESS": {
+        "SAVE": "Data saved successfully.",
+        "CREATE": "Data created successfully.",
+        "FETCH": "Data retrieved successfully.",
+        "UPDATE": "Data updated successfully.",
+        "STATUS_UPDATE": "Status updated successfully.",
+        "DELETE": "Data deleted successfully.",
+        "FILE_DELETE": "File deleted successfully.",
+        "DETAIL": "Details retrieved successfully.",
+        "IMPORT": "Data imported successfully.",
+        "LOG_SAVE": "Log saved successfully.",
+        "USER_ASSIGNED": "User assigned successfully.",
+        "DOC_UPLOAD": "Document uploaded Successfully",
+        "ORDER_CREATE": "Order create successfully",
+        "STATE_ASSIGNED": "State Assigned Succesfully"
+    },
+    "ERROR": {
+        "BAD_REQ": "Bad Request,Contact Support",
+        "INVALID_DATE_RANGE": "Dates Are Not Proper",
+        "INTERNAL_SERVER_ERROR": "Internal Server Error",
+        "NOT_FOUND": "Data not found",
+        "OTP_REQUIRED": "OTP is required",
+        "INVALID_OTP": "Invalid OTP",
+        "NOT_EXIST": "No Data Found.",
+        "UPDATE_FAILED": "Data Update Failed",
+        "IS_SENIOR_AUTHORIZED": "You can not perform this action",
+        "STATE_NOT_DEFINED": "The state information is missing for this customer.",
+        "BEAT_ALREADY_EXIST": "Beat Route Already Exist"
+    },
+    "WARNING": {
+        "INVALID_DATE_RANGE": "Start date should not be later than end date.",
+        "NOT_EXIST": "No Data Found.",
+        "ACTIVE_TAB_MISMATCH": "Wrong active tab",
+        "ALREADY_UPDATED": "Data already updated",
+        "ALREADY_EXIST": "Data Already Exists",
+        "ALREADY_STATUS_UPDATE": "Status already updated",
+        "ALREADY_DELETE": "Data already deleted!",
+        "UPDATE_FAILED": "Data Update Failed",
+        "EXIST": "Data already exists",
+        "NO_DUPLICACY": "Duplicacy not found",
+        "IMAGE_NOT_FOUND": "Image not found",
+        "INSERT_FAILED": "Insert query failed",
+        "MOBILE": "Mobile",
+        "FILE_NOT_FOUND": "File not found",
+        "DATA_NOT_FOUND": "Data not found",
+        "SCHME_EXIST": "Scheme Already Exist"
+    },
+    "BADGES": {
+        "ALREADY_EXIST": "Badge data is already exist with given date & eligible points",
+        "NOT_EXIST": "No badge data is found with given date."
+    },
+    "BONUS": {
+        "ALREADY_EXIST": "Bonus is already running on given state, district and customer type please deactivate first then try again.",
+        "NOT_EXIST": "No badge data is found with given date."
+    },
+    "GIFT": {
+        "LIKE": "Like Successfully",
+        "UNLIKE": "Unlike Successfully"
+    },
+    "LEADERBOARD": {
+        "NOT_EXIST": "No Leaderboard running in your area.",
+        "ALREADY_EXIST": "Leaderboard already exist with same date interval.",
+        "NO_CUSTOMER": "No customer available in selected state."
+    },
+    "LEDGER": {
+        "INVALID_TRANSACTION_TYPE": "Transaction type is invalid.",
+        "INVALID_CREATION_TYPE": "Creation Type is invalid",
+        "INVALID_POINTS": "Points must be a positive number.",
+        "INVALID_BALANCE": "Customer balance not found.",
+        "INSUFFICIENT_BALANCE": "Insufficient balance for debit.",
+        "MISSING_FIELDS": "Missing required fields."
+    },
+    "QR": {
+        "SUCCESS_SCAN": "Qr code successfully scanned.",
+        "CUSTOMER_NOT_ACTIVE": "Your profile is under verfication.",
+        "CUSTOMER_TYPE_NOT_DEFINED": "Contact to admin.",
+        "SCANNING_QR_NOT_ALLOWED": "QR scanning is not allowed under your login.",
+        "SCAN_LIMIT_UNDEFINED": "Scan limit not defined.",
+        "LIMIT_REACHED": "Scan Limit reached.",
+        "QR_NOT_FOUND": "Invalid Qr code.",
+        "ALREADY_SCANNED": "Already scanned by self.",
+        "SOME_ITEMS_SCANNED_BY_TYPE": "Some items of box Already scanned by same type.",
+        "SOME_ITEMS_SCANNED_BY_SELF": "Some items of box Already scanned by self.",
+        "ALREADY_SCANNED_BY_TYPE": "Already scanned by same type.",
+        "ALREADY_SCANNED_GROUP": "Already scanned by other type",
+        "SCANNING_INACTIVE": "Scanning inactive for this qr code contact support.",
+        "POINT_CATEGORY_NOT_MAPPED": "Point Category Not Mapped.",
+        "POINT_NOT_DEFINED": "Point Not Defined.",
+        "TYPE_MISMATCH": "Qr Code Type Not Matched.",
+        "PRODUCT_NOT_EXIST": "Mapped Product Not Found",
+        "BOX_NOT_DEFINED": "Box Size Not Defined On Product.",
+        "QR_TYPE_NOT_FOUND": "QR type not defined",
+        "NOT_DELETE_ALREADY_DISPATCHED": "Already Dispatched.",
+        "NOT_DELETE_ALREADY_SCAN": "Already Scanned.",
+        "LIMIT_EXCEED": "Minimum Generate 5000 Qrcode "
+    },
+    "DISPATCH": {
+        "ORDER_NOT_FOUND": "Scanned QR code not found in system",
+        "ORDER_ITEM_NOT_FOUND": "Scanned QR code not found in system",
+        "DISPATCH_QTY_GREATER_THAN_ORDER": "Scanned QR code not found in system",
+        "DISPATCH_QTY_CANT_GREATER_THAN_ORDERED": "Scanned QR code not found in system",
+        "ORDER_STATUS_UPDATED_SUCCESSFULLY": "Scanned QR code not found in system",
+        "DISPATCH_ITEM_NOT_FOUND": "Scanned QR code not found in system",
+        "PLANNED_QTY_LESS_THAN_SCANNED": "Planned quantity cannot be less than scanned quantity.",
+        "PLANNED_QTY_CANT_ZERO": "Planned quantity cant be zero.",
+        "PLANNED_CANNOT_GREATER_AVAILABLE": "Planned quantity cant be greater than available qty.",
+        "INVALID_QTY": "Invalid Qty",
+        "ITEM_DECREASED": "Item decreased successfully",
+        "NO_PENDING_QTY": "No pending qty",
+        "ITEM_DISPATCHED": "Item Dispatched.",
+        "BOX_EMPTY": "Box Empty.",
+        "SOME_ITEM_NOT_FOUND_IN_DISPATCH": "Some items not found in dispatch data.",
+        "NO_PENDING_QTY_ON_SOME_ITEMS": "No pending qty.",
+        "BOX_SIZE_GREATER_THAN_PENDNIG": "Box size greater than pending qty.",
+        "BOX_DISPATCHED": "Box Dispatched.",
+        "INVALID_BOX_QR_DATA": "Invalid box data.",
+        "INVALID_MASTER_BOX": "Invalid master box data.",
+        "INVALID_QR": "Invalid Qr.",
+        "INVALID_QR_TYPE": "Invalid qr type.",
+        "ITEM_ALREADY_DISPATCHED": "Item already dispatched.",
+        "BOX_ALREADY_DISPATCHED": "Box already dispatched.",
+        "BOX_ALREADY_OPENED": "Box already opened.",
+        "INVALID_BOX_ITEMS": "Invalid box items.",
+        "TYPE_MISMATCH": "Wrong qr type.",
+        "MASTER_BOX_ALREADY_SCANNED": "Master box already scanned.",
+        "QR_SCANNING_DISABLED": "Scanning disabled dispatch manually.",
+        "ITEM_NOT_FOUND_IN_DISPATCH": "Item not found.",
+        "INVALID_DATA": "Invalid data.",
+        "GATEPASS_ALREADY_EXIST": "Gatepass already exists for one or more dispatches.",
+        "GATEPASS_NOT_FOUND": "Gatepass not found.",
+        "BILLING_COMPANY_MISMATCH": "All billing companies must be the same to create a gatepass.",
+        "DISPATCH_NOT_ALLOWED_POINT_CAT": "Dispatch not allowed on point category qr codes.",
+        "ok": "Success."
+    },
+    "REDEEM": {
+        "INSUFFICIENT_BALANCE": "Insufficient balance for redeem.",
+        "NO_GIFT_FOUND": "No gift available for redeem",
+        "KYC_NOT_VERIFIED": "Your kyc is not verified yet.",
+        "INVALID_GIFT_TYPE": "Invalid Gift Type.",
+        "BANK_DETAILS_NOT_FOUND": "Update Your Bank Details For REDEEM",
+        "UPI_DETAILS_NOT_FOUND": "Update Your Upi Details For REDEEM",
+        "NOT_FOUND": "Request Not Found",
+        "NO_VOUCHER_FOUND": "No Voucher available for redeemption"
+    },
+    "SPIN": {
+        "NO_SPIN_AVAILABLE": "No Spin Available",
+        "POINT_MISSING": "Points Not Defined",
+        "NOT_ELIGIBLE": "Not Eligible For Spin",
+        "ALREADY_EXIST": "Same customer type spin already created."
+    },
+    "CALL": {
+        "ALREADY_EXIST": "Request already raised please wait for call back.",
+        "CREATE": "Call request successfully sent"
+    },
+    "TICKET": {
+        "APP": {
+            "CREATE": "Ticket generated successfully"
+        },
+        "ALREADY_EXIST": "Ticket already raised with same type please wait for update.",
+        "FEEDBACK_SUBMITTED": "Thanks for your feedback.",
+        "CLOSED": "Ticket closed."
+    },
+    "CHAT": {
+        "FORBIDDEN": "No Permission",
+        "NO_RECIEVER": "Reciever Not Found",
+        "NO_ROOM": "Room Not Found"
+    },
+    "CUSTOMER": {
+        "NOT_EXIST": "Customer not exists",
+        "MOBILE": "Mobile",
+        "EMAIL": "Email",
+        "UPI_ID": "UPI ID",
+        "ACCOUNT_NUMBER": "Account Number",
+        "ACCOUNT_NUMBER_EXIST": "Account Number already exist!",
+        "IDENTIFIER_NOT_FOUND": "indetifier not found please check",
+        "CUSTOMER_CODE": "Customer Code",
+        "REFRRALCODE": "referral code not exist",
+        "ACCOUNT_NOT_MATCHED": "Account number and confrim account number must be same",
+        "DOC_NUMBER": "Document Number",
+        "MOBILE_EXIST": "Mobile name already exist",
+        "PINCODE_EXIST": "Pincode already exist",
+        "ACCOUNT_TYPE_NOT_FOUND": "Account type not found",
+        "DOC_NUMBER_EXIST": "Document number already exist",
+        "NOT_APPROVED": "Your Prfile status should be Approved!",
+        "KYC_ERROR": "Can't change your bank detail until your kyc is approved"
+    },
+    "CSV": {
+        "ANALYZED": "csv analyzed successfully",
+        "GENERATE": "csv generate successfully"
+    },
+    "VISIT": {
+        "ATTENDANCE_ALERT": "Start your attendance first!",
+        "LAST_VISIT_NOT_END": "Check out your last visit first",
+        "ALREDAY_END": "Your last visit has already been ended.",
+        "RADIUS_ERROR": "You must be within {{meter}} meters of the shop",
+        "START": "Visit has started",
+        "END": "Visit has ended",
+        "START_ERROR": "Error occurred while starting visit",
+        "END_ERROR": "Error occurred while ending visit",
+        "PLANNED_VISIT_ERROR": "Planned Date should be today date"
+    },
+    "ATTENDANCE": {
+        "ALREADY_PUNCH_IN": "You have already punched in. Please check out before punching in again.",
+        "ALREADY_PUNCH_OUT": "You have already punched out.",
+        "PUNCH_IN": "Attendance marked successfully.",
+        "PUNCH_OUT": "Punch out marked successfully.",
+        "PUNCH_IN_ERROR": "Failed to mark attendance. Please try again.",
+        "PUNCH_OUT_ERROR": "Failed to mark punch out. Please try again."
+    },
+    "PRODUCT": {
+        "DISCOUNT_ERROR": "{{key}} must be less than or equal to 100. Found: {{value}}",
+        "MRP_DROPDOWN_ERROR": "Zone not found"
+    },
+    "ORDER": {
+        "CREATE": "Order Create Successfully",
+        "NOT_FOUND": "Data Not Found",
+        "ITEM_NOT_FOUND": "Item Not Found",
+        "FAILED": "Order Creation Failed"
+    },
+    "CART": {
+        "NOT_FOUND": "Cart Data is Empty",
+        "ITEM_NOT_FOUND": "Cart Item is Empty",
+        "DELETE": "Cart Remove Succesfully!"
+    },
+    "LEAVE": {
+        "APP": {
+            "BALANCE_CONFLICT": "You do not have sufficient leave balance for {{leave_type}} type.",
+            "AVAILABLE_BALANCE": "Only {{available}} {{leave_type}} left. You're requesting {{requested}} day(s).",
+            "WRONG_DATES_PASSED": "Leave start or end date is invalid.",
+            "POLICY_NOT_FOUND": "Leave Policy Not Found",
+            "ALREADY_EXIST": "Leave Already Exist",
+            "HALF_DAY_ERROR": "You can select only one date for half-day leave.",
+            "NO_BALANCE_AVAILABLE": "Leave Balance Not Found",
+            "POLICY_DATE_MISMATCH": "Policy date mismatch detected. Please contact the admin for assistance."
+        },
+        "MASTER": {
+            "ALREADY_EXIST": "Policy of selected date is already exist",
+            "WRONG_DATES_PASSED": "Leave Start or End Date is Invalid.",
+            "LEAVE_POLICY_NOT_FOUND": "Leave Policy Not Found",
+            "LEAVE_POLICY_NOT_EXIST": "Leave Policy Not Exist",
+            "UPDATE_FAILED": "Leave Updation Failed",
+            "LEAVE_TYPE_NOT_FOUND": "Leave Type Not Found.",
+            "NO_BALANCE_AVAILABLE": "No Leave Balance Available.",
+            "NOT_EXIST": "Leave Not Exist"
+        }
+    },
+    "EXPENSE": {
+        "APP": {
+            "EXIST": "Expense is already exist of selected dates",
+            "NOT_EXIST": "Expense not exist",
+            "DRAFT_DELETE_ALLOW": "Deletion not allowed. Only records in draft status can be deleted.",
+            "DATE_CONFLICT": "End date should be greater then start"
+        },
+        "NOT_EXIST": "Your expense policy is not defined. Please contact your administrator.",
+        "DRAFT_DELETE_ALLOW": "Deletion not allowed. Only records in draft status can be deleted."
+    },
+    "BEAT_PLAN": {
+        "NOT_ASSIGNED": "Beat Plan Not Assigned",
+        "USER_NOT_FOUND": "User Not Found",
+        "BEAT_NOT_FOUND": "Beat Plan Not Assigned"
+    },
+    "ORDER_SCHEME": {
+        "ALREADY_EXIST": "Scheme Already Exist",
+        "NOT_EXIST": "No Data Found"
+    },
+    "POP_GIFT": {
+        "ASSIGNED_FAILED": "Stock Assigned Failed",
+        "RETURN_FAILED": "Stock Return Failed"
+    },
+    "ENQUIRY": {
+        "ASSIGNED": "User Assigned Succesfully",
+        "STAGE_UPDATE": "Stage Update Succesfully"
+    },
+    "SPARE_PART": {
+        "NOT_EXIST": "Spare Part Not Available/"
+    },
+    "COMPLAINT": {
+        "COMPLAINT_NOT_FOUND": "Complaint Not Found",
+        "INSPECTION_EXISTS": "Inspection Already Exists",
+        "INSPECTION_CREATE": "Inspection Created Successfully.",
+        "STARTED": "Visit Start Successfully.",
+        "VISIT_EXIST": "Visit Already Ended.",
+        "VISIT_ENDED": "Visit Ended Successfully.",
+        "SPARE_ADDED": "Spare Added Successfully.",
+        "SPARES_REQUIRED": "Add Atleast One Spare",
+        "LAT_LONG": "Lat and Lng Are Required",
+        "INSUFFICIENT_STOCKS": "Insufficient Stock For {{product_name}}"
+    },
+    "STOCK_TRANSFER": {
+        "INVALID_TAB": "Invalid Tab Selection",
+        "PRODUCT_NOT_FOUND": "Product Not Founds",
+        "NOT_FOUND": "{{product_name}} Is Not Found",
+        "INSPECTION_CREATE": "Inspection Created Successfully.",
+        "INSUFFICIENT_STOCK": "Insufficient Stock For {{product_name}}"
+    },
+    "USER": {
+        "REPORTING_ERROR": {
+            "SAME": "A user cannot assign themselves as their own reporting manager.",
+            "SELF": "The user is already one of your direct juniors. You cannot assign them as a reporting manager.",
+            "CYCLIC": "The selected reporting manager is already a junior under someone else. You cannot assign them as a reporting manager."
+        }
+    },
+    "PURCHASE": {
+        "BILL_EXIST": "Bill Number Already Exist",
+        "POINT_CAT_NOT_MAP": "Point Category Not Map For This Product",
+        "POINT_CAT_NOT_FOUND": "Point Category Not Found"
+    }
+}
