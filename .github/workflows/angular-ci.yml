@@ -131,10 +131,10 @@ jobs:
         run: npm install
 
       - name: 🛠️ Build Angular app
-        run: npm run build -- --output-path=dist
+        run: npm run build -- --output-path=preview
 
       - name: 📦 Zip build
-        run: zip -r build.zip dist/
+        run: zip -r build.zip preview/
 
       - name: ☁️ Upload artifact
         uses: actions/upload-artifact@v4
