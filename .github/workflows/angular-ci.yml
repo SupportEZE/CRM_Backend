@@ -61,15 +61,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: 🧹 Clean up macOS-only deps
-        run: |
-          jq 'del(.dependencies["@rollup/rollup-darwin-arm64"])' package.json > temp.json && mv temp.json package.json
-          sed -i '/"@rollup\/rollup-darwin-arm64"/,+5d' package-lock.json
-      - name: 📦 Install dependencies
-        run: |
-          npm ci --legacy-peer-deps
-          npm install sortablejs flatpickr apexcharts filepond luxon overlayscrollbars --save
-          npm install @types/sortablejs @types/flatpickr @types/luxon --save-dev || true
+      - name: 📦 Install dependencies (no lock file fallback)
+        run: npm install
           
       - name: 🔍 Run SonarQube Scan
         env:
@@ -131,7 +124,7 @@ jobs:
         run: npm install
 
       - name: 🛠️ Build Angular app
-        run: npm run build -- --output-path=dist
+        run: npm run build
 
       - name: 📦 Zip build
         run: zip -r build.zip dist/
