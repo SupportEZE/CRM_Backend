@@ -1,4 +1,4 @@
-name: Build and Testing
+name: Build and Deploy NestJS Backend
 
 on:
   workflow_dispatch:
@@ -8,11 +8,11 @@ on:
         required: true
 
 jobs:
-  build-and-upload:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚫 Validate client folder on server before proceeding
+      - name: 🚫 Validate backend folder exists on server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 43.204.204.109
@@ -22,30 +22,23 @@ jobs:
           script: |
             Backend_folder="${{ github.event.inputs.client_name }}"
             if [ ! -d "/var/www/html/$Backend_folder" ]; then
-              echo "❌ ERROR: Backend Folder not exist '/var/www/html/$Backend_folder' does not exist."
+              echo "❌ ERROR: Backend Folder '/var/www/html/$Backend_folder' does not exist."
               exit 1
             else
-              echo "✅  Folder exists. Proceeding with deployment..."
+              echo "✅ Folder exists. Proceeding..."
             fi
-      - name: Checkout code
+
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: 🧰 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: 🧹 Remove macOS-only package
-        run: |
-          jq 'del(.dependencies["@rollup/rollup-darwin-arm64"])' package.json > temp.json && mv temp.json package.json
-          sed -i '/"@rollup\/rollup-darwin-arm64"/,+5d' package-lock.json
-      - name: 📦 Install core dependencies
-        run: npm ci --legacy-peer-deps
+      - name: 📦 Install dependencies
+        run: npm ci
 
-      - name: 📦 Install third-party UI dependencies
-        run: |
-          npm install sortablejs flatpickr apexcharts filepond luxon overlayscrollbars --save
-          npm install @types/sortablejs @types/flatpickr @types/luxon --save-dev || true
       - name: 🔍 Run SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -54,23 +47,25 @@ jobs:
           unzip sonar-scanner.zip
           export PATH="$PWD/sonar-scanner-5.0.1.3006-linux/bin:$PATH"
           sonar-scanner \
-            -Dsonar.projectKey=CRM-Tailwind \
+            -Dsonar.projectKey=CRM-Backend \
             -Dsonar.sources=src \
             -Dsonar.host.url=http://13.203.181.169:9000 \
             -Dsonar.login=$SONAR_TOKEN
+
       - name: 🛡️ Run Bearer scan
         run: |
           curl -sSLo bearer.tar.gz https://github.com/Bearer/bearer/releases/download/v1.49.0/bearer_1.49.0_linux_amd64.tar.gz
           tar -xzf bearer.tar.gz
           chmod +x bearer
           ./bearer scan . --format sarif --output bearer-report.sarif || true
+
       - name: 📤 Upload Bearer Report
         uses: actions/upload-artifact@v4
         with:
           name: bearer-report
           path: bearer-report.sarif
 
-      - name: 📧 Email scan reports before build
+      - name: 📧 Email scan reports
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -84,31 +79,28 @@ jobs:
           attachments: bearer-report.sarif
           body: |
             Hello,
-            Code Quality and Security scan has been done. Please check the reports:
-            - Code Quality: http://13.203.181.169:9000/dashboard?id=CRM-Tailwind
-            - Security: Bearer report attached.
-            Regards,
-            Nitin
-      - name: 🛠️ Build Angular app
-        run: npm run build -- --output-path=preview
+            Please find the security and code quality reports attached.
+
+      - name: 🏗️ Build NestJS backend
+        run: npm run build
 
       - name: 📦 Zip build output
-        run: zip -r build.zip preview/
+        run: zip -r backend-build.zip dist .env package.json package-lock.json
 
       - name: ☁️ Upload artifact to GitHub
         uses: actions/upload-artifact@v4
         with:
-          name: angular-build
-          path: build.zip
+          name: backend-build
+          path: backend-build.zip
 
-      - name: 📦 Copy build.zip to remote server
+      - name: 🚀 Copy build to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: 43.204.204.109
           username: ec2-user
           port: 22786
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: build.zip
+          source: backend-build.zip
           target: /home/ec2-user/backend
 
       - name: 🖥️ SSH into server and deploy
@@ -119,7 +111,7 @@ jobs:
           port: 22786
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            Frontend_folder="${{ github.event.inputs.client_name }}"
+            Backend_folder="${{ github.event.inputs.client_name }}"
             cd /home/ec2-user/backend
-            unzip -o build.zip
-            cp -r preview/browser/* /var/www/html/$Backend_folder/dist
+            unzip -o backend-build.zip -d /var/www/html/$Backend_folder
+            echo "✅ Backend deployed to /var/www/html/$Backend_folder"
