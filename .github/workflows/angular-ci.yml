@@ -153,13 +153,13 @@ jobs:
           port: 22786
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            FOLDER_NAME="${{ github.event.inputs.client_name }}"
+            FOLDER_NAME="${{ github.event.inputs.folder_name }}"
             TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-            BACKUP_DIR="/home/ec2-user/${FOLDER_NAME}_dist_backup_$TIMESTAMP"/
+            BACKUP_DIR="/home/ec2-user/${FOLDER_NAME}_dist_backup_$TIMESTAMP"
 
             echo "📁 Backing up existing deployment to $BACKUP_DIR ..."
             if [ -d "/var/www/html/$FOLDER_NAME" ]; then
-              cp -r /var/www/html/$FOLDER_NAME/dist/* "$BACKUP_DIR"
+              cp -r /var/www/html/$FOLDER_NAME/dist "$BACKUP_DIR"
               echo "✅ Backup complete."
             else
               echo "⚠️ Warning: No existing folder to backup."
