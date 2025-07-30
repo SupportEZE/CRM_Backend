@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             Backend_folder="${{ github.event.inputs.client_name }}"
-            if [ ! -d "/var/www/html/frontend/$Backend_folder" ]; then
+            if [ ! -d "/var/www/html/$Backend_folder" ]; then
               echo "❌ ERROR: Backend Folder not exist '/var/www/html/$Backend_folder' does not exist."
               exit 1
             else
@@ -122,4 +122,4 @@ jobs:
             Frontend_folder="${{ github.event.inputs.client_name }}"
             cd /home/ec2-user/backend
             unzip -o build.zip
-            cp -r preview/browser/* /var/www/html/$Frontend_folder/dist
+            cp -r preview/browser/* /var/www/html/$Backend_folder/dist
