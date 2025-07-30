@@ -159,7 +159,7 @@ jobs:
 
             echo "📁 Backing up existing deployment to $BACKUP_DIR ..."
             if [ -d "/var/www/html/$FOLDER_NAME" ]; then
-              cp -r /var/www/html/$FOLDER_NAME "$BACKUP_DIR"
+              cp -r /var/www/html/$FOLDER_NAME/dist "$BACKUP_DIR"
               echo "✅ Backup complete."
             else
               echo "⚠️ Warning: No existing folder to backup."
