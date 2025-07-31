@@ -155,7 +155,7 @@ jobs:
           script: |
             FOLDER_NAME="${{ github.event.inputs.folder_name }}"
             TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-            BACKUP_DIR="/home/ec2-user/${FOLDER_NAME}_dist_backup_$TIMESTAMP"
+            BACKUP_DIR="/home/ec2-user/backend/${FOLDER_NAME}_dist_backup_$TIMESTAMP"
 
             echo "📁 Backing up existing deployment to $BACKUP_DIR ..."
             if [ -d "/var/www/html/$FOLDER_NAME" ]; then
@@ -170,3 +170,6 @@ jobs:
             unzip -o build.zip
             cp -r dist/* /var/www/html/$FOLDER_NAME/dist/
             echo "🚀 Deployment complete."
+            
+            # 🔁 Restart PM2 process as root
+            sudo su - -c "pm2 restart api"
