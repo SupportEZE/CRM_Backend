@@ -44,15 +44,13 @@ jobs:
     if: ${{ github.event.inputs.action_type == 'deploy' }}
     runs-on: ubuntu-latest
     steps:
-      - name: 🌐 Set deployment variables
+      - name: 🌐 Set deployment host
         id: setvars
         run: |
           if [[ "${{ github.event.inputs.deploy_env }}" == "development" ]]; then
             echo "host=43.204.204.109" >> $GITHUB_OUTPUT
-            echo "ssh_key=${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event.inputs.deploy_env }}" == "production" ]]; then
             echo "host=52.66.51.37" >> $GITHUB_OUTPUT
-            echo "ssh_key=${{ secrets.SSH_PROD_KEY }}" >> $GITHUB_OUTPUT
           fi
 
       - name: 🚫 Validate client folder exists on server
@@ -61,7 +59,7 @@ jobs:
           host: ${{ steps.setvars.outputs.host }}
           username: ec2-user
           port: 22786
-          key: ${{ steps.setvars.outputs.ssh_key }}
+          key: ${{ github.event.inputs.deploy_env == 'production' && secrets.SSH_PROD_KEY || secrets.SSH_PRIVATE_KEY }}
           script: |
             FOLDER_NAME="${{ github.event.inputs.folder_name }}"
             if [ ! -d "/var/www/html/$FOLDER_NAME" ]; then
@@ -79,15 +77,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🌐 Set deployment variables
+      - name: 🌐 Set deployment host
         id: setvars
         run: |
           if [[ "${{ github.event.inputs.deploy_env }}" == "development" ]]; then
             echo "host=43.204.204.109" >> $GITHUB_OUTPUT
-            echo "ssh_key=${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event.inputs.deploy_env }}" == "production" ]]; then
             echo "host=52.66.51.37" >> $GITHUB_OUTPUT
-            echo "ssh_key=${{ secrets.SSH_PROD_KEY }}" >> $GITHUB_OUTPUT
           fi
 
       - name: 📦 Install dependencies
@@ -112,7 +108,7 @@ jobs:
           host: ${{ steps.setvars.outputs.host }}
           username: ec2-user
           port: 22786
-          key: ${{ steps.setvars.outputs.ssh_key }}
+          key: ${{ github.event.inputs.deploy_env == 'production' && secrets.SSH_PROD_KEY || secrets.SSH_PRIVATE_KEY }}
           source: build.zip
           target: /home/ec2-user/backend
 
@@ -122,7 +118,7 @@ jobs:
           host: ${{ steps.setvars.outputs.host }}
           username: ec2-user
           port: 22786
-          key: ${{ steps.setvars.outputs.ssh_key }}
+          key: ${{ github.event.inputs.deploy_env == 'production' && secrets.SSH_PROD_KEY || secrets.SSH_PRIVATE_KEY }}
           script: |
             FOLDER_NAME="${{ github.event.inputs.folder_name }}"
             TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
