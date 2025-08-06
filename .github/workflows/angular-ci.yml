@@ -9,6 +9,9 @@ on:
       folder_name:
         description: "Folder Name (Required for deploy)"
         required: false
+      deploy_env:
+        description: "Enter 'development' or 'production' (Required for deploy)"
+        required: false
 
 jobs:
   conditional-job:
@@ -18,10 +21,19 @@ jobs:
         id: check
         run: |
           echo "Action Type: ${{ github.event.inputs.action_type }}"
+          echo "Environment: ${{ github.event.inputs.deploy_env }}"
           
           if [[ "${{ github.event.inputs.action_type }}" == "deploy" ]]; then
             if [[ -z "${{ github.event.inputs.folder_name }}" ]]; then
               echo "❌ folder_name is required for deployment."
+              exit 1
+            fi
+            if [[ -z "${{ github.event.inputs.deploy_env }}" ]]; then
+              echo "❌ deploy_env is required for deployment."
+              exit 1
+            fi
+            if [[ "${{ github.event.inputs.deploy_env }}" != "development" && "${{ github.event.inputs.deploy_env }}" != "production" ]]; then
+              echo "❌ deploy_env must be 'development' or 'production'."
               exit 1
             fi
           fi
@@ -32,21 +44,105 @@ jobs:
     if: ${{ github.event.inputs.action_type == 'deploy' }}
     runs-on: ubuntu-latest
     steps:
+      - name: 🌐 Set deployment variables
+        id: setvars
+        run: |
+          if [[ "${{ github.event.inputs.deploy_env }}" == "development" ]]; then
+            echo "host=43.204.204.109" >> $GITHUB_OUTPUT
+            echo "ssh_key=${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.inputs.deploy_env }}" == "production" ]]; then
+            echo "host=52.66.51.37" >> $GITHUB_OUTPUT
+            echo "ssh_key=${{ secrets.SSH_PROD_KEY }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: 🚫 Validate client folder exists on server
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 43.204.204.109
+          host: ${{ steps.setvars.outputs.host }}
           username: ec2-user
           port: 22786
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ steps.setvars.outputs.ssh_key }}
           script: |
             FOLDER_NAME="${{ github.event.inputs.folder_name }}"
             if [ ! -d "/var/www/html/$FOLDER_NAME" ]; then
               echo "❌ ERROR: Client folder '/var/www/html/$FOLDER_NAME' does not exist."
               exit 1
             else
-              echo "✅ BACKEND folder exists."
+              echo "✅ BACKEND folder '$FOLDER_NAME' exists."
             fi
+
+  deploy-job:
+    needs: validate-client-folder
+    if: ${{ github.event.inputs.action_type == 'deploy' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🌐 Set deployment variables
+        id: setvars
+        run: |
+          if [[ "${{ github.event.inputs.deploy_env }}" == "development" ]]; then
+            echo "host=43.204.204.109" >> $GITHUB_OUTPUT
+            echo "ssh_key=${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.inputs.deploy_env }}" == "production" ]]; then
+            echo "host=52.66.51.37" >> $GITHUB_OUTPUT
+            echo "ssh_key=${{ secrets.SSH_PROD_KEY }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🛠️ Build NestJS app with extended memory
+        run: node --max-old-space-size=4096 ./node_modules/.bin/nest build
+
+      - name: 📦 Zip build
+        run: zip -r build.zip dist/
+
+      - name: ☁️ Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-build
+          path: build.zip
+          retention-days: 2
+
+      - name: 📦 Copy to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ steps.setvars.outputs.host }}
+          username: ec2-user
+          port: 22786
+          key: ${{ steps.setvars.outputs.ssh_key }}
+          source: build.zip
+          target: /home/ec2-user/backend
+
+      - name: 🚀 Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ steps.setvars.outputs.host }}
+          username: ec2-user
+          port: 22786
+          key: ${{ steps.setvars.outputs.ssh_key }}
+          script: |
+            FOLDER_NAME="${{ github.event.inputs.folder_name }}"
+            TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+            BACKUP_DIR="/home/ec2-user/backend/${FOLDER_NAME}_dist_backup_$TIMESTAMP"
+
+            echo "📁 Backing up existing deployment to $BACKUP_DIR ..."
+            if [ -d "/var/www/html/$FOLDER_NAME" ]; then
+              cp -r /var/www/html/$FOLDER_NAME/dist "$BACKUP_DIR"
+              echo "✅ Backup complete."
+            else
+              echo "⚠️ Warning: No existing folder to backup."
+            fi
+
+            echo "📦 Unzipping new build and deploying..."
+            cd /home/ec2-user/backend
+            unzip -o build.zip
+            cp -r dist/* /var/www/html/$FOLDER_NAME/dist/
+            echo "🚀 Deployment complete."
+
+            sudo su - -c "pm2 restart api"
 
   scan-job:
     needs: conditional-job
@@ -111,65 +207,3 @@ jobs:
 
             Regards,
             CI/CD Bot
-
-  deploy-job:
-    needs: validate-client-folder
-    if: ${{ github.event.inputs.action_type == 'deploy' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📦 Install dependencies (no lock file fallback)
-        run: npm install
-
-      - name: 🛠️ Build NestJS app with extended memory
-        run: node --max-old-space-size=4096 ./node_modules/.bin/nest build
-
-      - name: 📦 Zip build
-        run: zip -r build.zip dist/
-
-      - name: ☁️ Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: angular-build
-          path: build.zip
-
-      - name: 📦 Copy to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: 43.204.204.109
-          username: ec2-user
-          port: 22786
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: build.zip
-          target: /home/ec2-user/backend
-
-      - name: 🚀 Deploy to server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: 43.204.204.109
-          username: ec2-user
-          port: 22786
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            FOLDER_NAME="${{ github.event.inputs.folder_name }}"
-            TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-            BACKUP_DIR="/home/ec2-user/backend/${FOLDER_NAME}_dist_backup_$TIMESTAMP"
-
-            echo "📁 Backing up existing deployment to $BACKUP_DIR ..."
-            if [ -d "/var/www/html/$FOLDER_NAME" ]; then
-              cp -r /var/www/html/$FOLDER_NAME/dist "$BACKUP_DIR"
-              echo "✅ Backup complete."
-            else
-              echo "⚠️ Warning: No existing folder to backup."
-            fi
-
-            echo "📦 Unzipping new build and deploying..."
-            cd /home/ec2-user/backend
-            unzip -o build.zip
-            cp -r dist/* /var/www/html/$FOLDER_NAME/dist/
-            echo "🚀 Deployment complete."
-            
-            # 🔁 Restart PM2 process as root
-            sudo su - -c "pm2 restart api"
